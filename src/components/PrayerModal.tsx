@@ -12,7 +12,9 @@ export interface PrayerData {
 
 export interface PrayerContent {
   english: PrayerData;
+  englishPlain: PrayerData;
   englishHebrew: PrayerData;
+  spanish: PrayerData;
   hebrew: PrayerData;
 }
 
