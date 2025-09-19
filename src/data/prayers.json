@@ -1,0 +1,137 @@
+{
+  "candleLighting": {
+    "english": {
+      "title": "Candle Lighting Blessing",
+      "text": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu l'hadlik ner shel Shabbat.",
+      "transliteration": "Blessed are You, Lord our God, King of the universe, who has sanctified us with His commandments and commanded us to kindle the Shabbat light.",
+      "instructions": "Light the Shabbat candles before sunset and recite this blessing."
+    },
+    "englishHebrew": {
+      "title": "Candle Lighting Blessing",
+      "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לְהַדְלִיק נֵר שֶׁל שַׁבָּת",
+      "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu l'hadlik ner shel Shabbat.",
+      "instructions": "Light the Shabbat candles before sunset and recite this blessing."
+    },
+    "hebrew": {
+      "title": "ברכת הדלקת נרות",
+      "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לְהַדְלִיק נֵר שֶׁל שַׁבָּת",
+      "instructions": "הדלק את נרות השבת לפני השקיעה ואמור את הברכה הזו."
+    }
+  },
+  "havdalah": {
+    "english": {
+      "title": "Havdalah Blessing",
+      "text": "Baruch atah Adonai, Eloheinu melech ha'olam, hamavdil bein kodesh l'chol, bein or l'choshech, bein Yisrael la'amim, bein yom hashvi'i l'sheshet y'mei hama'aseh. Baruch atah Adonai, hamavdil bein kodesh l'chol.",
+      "transliteration": "Blessed are You, Lord our God, King of the universe, who distinguishes between the sacred and the profane, between light and darkness, between Israel and the nations, between the seventh day and the six days of labor. Blessed are You, Lord, who distinguishes between the sacred and the profane.",
+      "instructions": "Recite this blessing at the end of Shabbat to mark the separation between the holy day and the regular week."
+    },
+    "englishHebrew": {
+      "title": "Havdalah Blessing",
+      "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם הַמַּבְדִּיל בֵּין קֹדֶשׁ לְחֹל בֵּין אוֹר לְחשֶׁךְ בֵּין יִשְׂרָאֵל לָעַמִּים בֵּין יוֹם הַשְּׁבִיעִי לְשֵׁשֶׁת יְמֵי הַמַּעֲשֶׂה בָּרוּךְ אַתָּה אֲדֹנָי הַמַּבְדִּיל בֵּין קֹדֶשׁ לְחֹל",
+      "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, hamavdil bein kodesh l'chol, bein or l'choshech, bein Yisrael la'amim, bein yom hashvi'i l'sheshet y'mei hama'aseh. Baruch atah Adonai, hamavdil bein kodesh l'chol.",
+      "instructions": "Recite this blessing at the end of Shabbat to mark the separation between the holy day and the regular week."
+    },
+    "hebrew": {
+      "title": "ברכת הבדלה",
+      "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם הַמַּבְדִּיל בֵּין קֹדֶשׁ לְחֹל בֵּין אוֹר לְחשֶׁךְ בֵּין יִשְׂרָאֵל לָעַמִּים בֵּין יוֹם הַשְּׁבִיעִי לְשֵׁשֶׁת יְמֵי הַמַּעֲשֶׂה בָּרוּךְ אַתָּה אֲדֹנָי הַמַּבְדִּיל בֵּין קֹדֶשׁ לְחֹל",
+      "instructions": "אמור את הברכה הזו בסוף השבת כדי לסמן את ההפרדה בין היום הקדוש לשבוע הרגיל."
+    }
+  },
+  "holidays": {
+    "roshHashana": {
+      "english": {
+        "title": "Rosh Hashana Blessings",
+        "text": "Baruch atah Adonai, Eloheinu melech ha'olam, shehecheyanu v'kiy'manu v'higi'anu laz'man hazeh.",
+        "transliteration": "Blessed are You, Lord our God, King of the universe, who has kept us alive, sustained us, and brought us to this season.",
+        "instructions": "Recite this blessing on the first night of Rosh Hashana and other holidays to mark the special occasion."
+      },
+      "englishHebrew": {
+        "title": "Rosh Hashana Blessings",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם שֶׁהֶחֱיָנוּ וְקִיְּמָנוּ וְהִגִּיעָנוּ לַזְּמַן הַזֶּה",
+        "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, shehecheyanu v'kiy'manu v'higi'anu laz'man hazeh.",
+        "instructions": "Recite this blessing on the first night of Rosh Hashana and other holidays to mark the special occasion."
+      },
+      "hebrew": {
+        "title": "ברכות ראש השנה",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם שֶׁהֶחֱיָנוּ וְקִיְּמָנוּ וְהִגִּיעָנוּ לַזְּמַן הַזֶּה",
+        "instructions": "אמור את הברכה הזו בלילה הראשון של ראש השנה ובחגים אחרים כדי לסמן את האירוע המיוחד."
+      }
+    },
+    "yomKippur": {
+      "english": {
+        "title": "Yom Kippur Blessings",
+        "text": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu al hat'filah.",
+        "transliteration": "Blessed are You, Lord our God, King of the universe, who has sanctified us with His commandments and commanded us concerning prayer.",
+        "instructions": "Recite this blessing before the special prayers of Yom Kippur."
+      },
+      "englishHebrew": {
+        "title": "Yom Kippur Blessings",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ עַל הַתְּפִלָּה",
+        "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu al hat'filah.",
+        "instructions": "Recite this blessing before the special prayers of Yom Kippur."
+      },
+      "hebrew": {
+        "title": "ברכות יום הכיפורים",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ עַל הַתְּפִלָּה",
+        "instructions": "אמור את הברכה הזו לפני התפילות המיוחדות של יום הכיפורים."
+      }
+    },
+    "sukkot": {
+      "english": {
+        "title": "Sukkot Blessings",
+        "text": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu leishev ba'sukkah.",
+        "transliteration": "Blessed are You, Lord our God, King of the universe, who has sanctified us with His commandments and commanded us to dwell in the sukkah.",
+        "instructions": "Recite this blessing when sitting in the sukkah during the holiday of Sukkot."
+      },
+      "englishHebrew": {
+        "title": "Sukkot Blessings",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לֵישֵׁב בַּסֻּכָּה",
+        "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu leishev ba'sukkah.",
+        "instructions": "Recite this blessing when sitting in the sukkah during the holiday of Sukkot."
+      },
+      "hebrew": {
+        "title": "ברכות סוכות",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לֵישֵׁב בַּסֻּכָּה",
+        "instructions": "אמור את הברכה הזו כשאתה יושב בסוכה במהלך חג הסוכות."
+      }
+    },
+    "hanukkah": {
+      "english": {
+        "title": "Hanukkah Blessings",
+        "text": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu l'hadlik ner shel Hanukkah.",
+        "transliteration": "Blessed are You, Lord our God, King of the universe, who has sanctified us with His commandments and commanded us to kindle the Hanukkah light.",
+        "instructions": "Recite this blessing when lighting the Hanukkah menorah each night of the holiday."
+      },
+      "englishHebrew": {
+        "title": "Hanukkah Blessings",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לְהַדְלִיק נֵר שֶׁל חֲנֻכָּה",
+        "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu l'hadlik ner shel Hanukkah.",
+        "instructions": "Recite this blessing when lighting the Hanukkah menorah each night of the holiday."
+      },
+      "hebrew": {
+        "title": "ברכות חנוכה",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ לְהַדְלִיק נֵר שֶׁל חֲנֻכָּה",
+        "instructions": "אמור את הברכה הזו כשאתה מדליק את מנורת החנוכה בכל לילה של החג."
+      }
+    },
+    "passover": {
+      "english": {
+        "title": "Passover Blessings",
+        "text": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu al achilat matzah.",
+        "transliteration": "Blessed are You, Lord our God, King of the universe, who has sanctified us with His commandments and commanded us concerning the eating of matzah.",
+        "instructions": "Recite this blessing before eating matzah during the Passover seder."
+      },
+      "englishHebrew": {
+        "title": "Passover Blessings",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ עַל אֲכִילַת מַצָּה",
+        "transliteration": "Baruch atah Adonai, Eloheinu melech ha'olam, asher kid'shanu b'mitzvotav v'tzivanu al achilat matzah.",
+        "instructions": "Recite this blessing before eating matzah during the Passover seder."
+      },
+      "hebrew": {
+        "title": "ברכות פסח",
+        "text": "בָּרוּךְ אַתָּה אֲדֹנָי אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְווֹתָיו וְצִוָּנוּ עַל אֲכִילַת מַצָּה",
+        "instructions": "אמור את הברכה הזו לפני אכילת מצה במהלך ליל הסדר."
+      }
+    }
+  }
+}

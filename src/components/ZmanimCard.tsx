@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { ZmanimData } from '@/services/hebcal';
+import PrayerModal from './PrayerModal';
 
 interface ZmanimCardProps {
   location: string;
@@ -8,6 +10,30 @@ interface ZmanimCardProps {
 }
 
 export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
+  const [prayerModal, setPrayerModal] = useState<{
+    isOpen: boolean;
+    type: 'candleLighting' | 'havdalah' | 'holiday';
+    holidayName?: string;
+  }>({
+    isOpen: false,
+    type: 'candleLighting'
+  });
+
+  const openPrayerModal = (type: 'candleLighting' | 'havdalah' | 'holiday', holidayName?: string) => {
+    setPrayerModal({
+      isOpen: true,
+      type,
+      holidayName
+    });
+  };
+
+  const closePrayerModal = () => {
+    setPrayerModal({
+      isOpen: false,
+      type: 'candleLighting'
+    });
+  };
+
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-in">
       {/* Main Zmanim Card */}
@@ -43,12 +69,18 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
           <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
             Weekly Torah Portion: <span className="text-blue-600 dark:text-blue-400 font-bold">{zmanimData.parsha}</span>
           </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 italic">
+            Press on anything to view prayer
+          </p>
         </div>
 
         {/* Times Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8">
           {/* Candle Lighting */}
-          <div className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-900/20 dark:via-amber-900/20 dark:to-yellow-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-orange-200/50 dark:border-orange-800/50">
+          <div 
+            className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-900/20 dark:via-amber-900/20 dark:to-yellow-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-orange-200/50 dark:border-orange-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
+            onClick={() => openPrayerModal('candleLighting')}
+          >
             {/* Single flex row: icon + content column */}
             <div className="flex items-start gap-4 sm:gap-6">
               {/* Icon */}
@@ -90,15 +122,21 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                 <p className="text-4xl sm:text-5xl font-black text-orange-600 dark:text-orange-400 mb-3">
                   {zmanimData.candleLighting}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">
                   Light candles 18 minutes before sunset
                 </p>
+                <div className="mt-2 text-xs text-orange-600 dark:text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view prayer
+                </div>
               </div>
             </div>
           </div>
 
           {/* Havdalah */}
-          <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-900/20 dark:via-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-purple-200/50 dark:border-purple-800/50">
+          <div 
+            className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-900/20 dark:via-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-purple-200/50 dark:border-purple-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
+            onClick={() => openPrayerModal('havdalah')}
+          >
             {/* Single flex row: icon + content column */}
             <div className="flex items-start gap-4 sm:gap-6">
               {/* Icon */}
@@ -140,9 +178,12 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                 <p className="text-4xl sm:text-5xl font-black text-purple-600 dark:text-purple-400 mb-3">
                   {zmanimData.havdalah}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
                   End of Shabbat
                 </p>
+                <div className="mt-2 text-xs text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view prayer
+                </div>
               </div>
             </div>
           </div>
@@ -184,7 +225,11 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
               
               
               return (
-                <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md transition-all duration-200">
+                <div 
+                  key={index} 
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
+                  onClick={() => openPrayerModal('holiday', holiday.title)}
+                >
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -192,7 +237,7 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white">
+                      <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-yellow-700 dark:group-hover:text-yellow-300 transition-colors">
                         {holiday.title}
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
@@ -203,6 +248,9 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                           Candle lighting: {holiday.candleLighting}
                         </p>
                       )}
+                      <div className="mt-1 text-xs text-yellow-600 dark:text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to view prayer
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
@@ -277,6 +325,14 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
           </div>
         </div>
       </div>
+
+      {/* Prayer Modal */}
+      <PrayerModal
+        isOpen={prayerModal.isOpen}
+        onClose={closePrayerModal}
+        prayerType={prayerModal.type}
+        holidayName={prayerModal.holidayName}
+      />
 
     </div>
   );

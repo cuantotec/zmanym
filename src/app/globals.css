@@ -313,3 +313,41 @@ body {
 .glass-heavy {
   @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg;
 }
+
+/* Hebrew font support */
+
+.hebrew-text {
+  font-family: 'Noto Sans Hebrew', 'Arial', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Prayer text styling */
+.prayer-text {
+  line-height: 1.8;
+  letter-spacing: 0.025em;
+}
+
+.prayer-text.hebrew {
+  font-family: 'Noto Sans Hebrew', 'Arial', sans-serif;
+  direction: rtl;
+  text-align: center;
+  line-height: 2;
+}
+
+.prayer-text.yiddish {
+  font-family: 'Noto Sans Hebrew', 'Arial', sans-serif;
+  direction: rtl;
+  text-align: center;
+  line-height: 2;
+}
