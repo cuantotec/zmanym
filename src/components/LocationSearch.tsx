@@ -70,7 +70,7 @@ export default function LocationSearch({ currentLocation, onLocationChange, onLo
                 if (!cachedZmanimData.has(result.geonameid)) {
                   console.log('🔍 LocationSearch: Background pre-fetching data for:', result.name);
                   try {
-                    const zmanimData = await hebcalService.getShabbatTimes(result.geonameid, result.name);
+                    const zmanimData = await hebcalService.getShabbatTimes(result.geonameid, result.name, result.isZipCode, result.zipCode);
                     onCacheData(result.geonameid, zmanimData);
                     console.log('🔍 LocationSearch: Background cached data for:', result.name);
                   } catch (error) {

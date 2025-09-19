@@ -49,7 +49,7 @@ export default function Home() {
         setLocation(savedLocation.name);
         setGeonameid(savedLocation.geonameid);
         setIsDefaultLocation(false);
-        await fetchZmanimData(savedLocation.geonameid, savedLocation.name);
+        await fetchZmanimData(savedLocation.geonameid, savedLocation.name, savedLocation.isZipCode || false, savedLocation.zipCode);
         return;
       }
 
@@ -70,11 +70,11 @@ export default function Home() {
   };
 
 
-  const fetchZmanimData = async (geonameid: string, locationName?: string) => {
-    console.log('🏠 Main App: Fetching zmanim data for geonameid:', geonameid, 'location:', locationName);
+  const fetchZmanimData = async (geonameid: string, locationName?: string, isZipCode?: boolean, zipCode?: string) => {
+    console.log('🏠 Main App: Fetching zmanim data for geonameid:', geonameid, 'location:', locationName, 'isZipCode:', isZipCode, 'zipCode:', zipCode);
     
     try {
-      const data = await hebcalService.getShabbatTimes(geonameid, locationName);
+      const data = await hebcalService.getShabbatTimes(geonameid, locationName, isZipCode, zipCode);
       console.log('🏠 Main App: Got zmanim data:', data);
       
       // Cache the data for future use
@@ -138,7 +138,7 @@ export default function Home() {
         setAppError(null);
       } else {
         console.log('🏠 Main App: Fetching zmanim data for geonameid:', selectedLocation.geonameid);
-        await fetchZmanimData(selectedLocation.geonameid, selectedLocation.name);
+        await fetchZmanimData(selectedLocation.geonameid, selectedLocation.name, selectedLocation.isZipCode, selectedLocation.zipCode);
       }
     } catch (err) {
       console.error('🏠 Main App: Error in handleLocationChange:', err);
@@ -183,7 +183,7 @@ export default function Home() {
         setAppError(null);
       } else {
         console.log('🏠 Main App: Fetching zmanim data for geonameid:', locationData.geonameid);
-        await fetchZmanimData(locationData.geonameid, locationData.name);
+        await fetchZmanimData(locationData.geonameid, locationData.name, locationData.isZipCode, locationData.zipCode);
       }
     } catch (err) {
       console.error('🏠 Main App: Error in handleLocationSelect:', err);

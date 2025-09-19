@@ -51,12 +51,18 @@ export async function GET(request: NextRequest) {
       
       locations = usLocations.map((item: unknown) => {
         const location = item as Record<string, unknown>;
+        const isZipCode = location.geo === 'zip';
+        
         return {
           geonameid: (location.id || location.geonameid || location.place_id) as string,
           name: (location.value || location.name || location.title || location.display_name) as string,
           country: (location.country || 'United States') as string,
           admin1: (location.admin1 || location.state || location.region) as string,
-          admin2: (location.asciiname || location.city || location.town || location.village) as string
+          admin2: (location.asciiname || location.city || location.town || location.village) as string,
+          isZipCode: isZipCode,
+          zipCode: isZipCode ? (location.id || location.geonameid) as string : undefined,
+          latitude: location.latitude as number,
+          longitude: location.longitude as number
         };
       });
     } else if (data.items && Array.isArray(data.items)) {
@@ -68,12 +74,18 @@ export async function GET(request: NextRequest) {
       
       locations = usLocations.map((item: unknown) => {
         const location = item as Record<string, unknown>;
+        const isZipCode = location.geo === 'zip';
+        
         return {
           geonameid: (location.id || location.geonameid || location.place_id) as string,
           name: (location.value || location.name || location.title || location.display_name) as string,
           country: (location.country || 'United States') as string,
           admin1: (location.admin1 || location.state || location.region) as string,
-          admin2: (location.asciiname || location.city || location.town || location.village) as string
+          admin2: (location.asciiname || location.city || location.town || location.village) as string,
+          isZipCode: isZipCode,
+          zipCode: isZipCode ? (location.id || location.geonameid) as string : undefined,
+          latitude: location.latitude as number,
+          longitude: location.longitude as number
         };
       });
     }

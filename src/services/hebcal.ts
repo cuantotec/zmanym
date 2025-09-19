@@ -8,6 +8,10 @@ export interface LocationData {
   country: string;
   admin1?: string;
   admin2?: string;
+  isZipCode?: boolean;
+  zipCode?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Holiday {
@@ -130,8 +134,8 @@ class HebcalService {
 
 
   // Fetch Shabbat times for a location using our API route
-  async getShabbatTimes(geonameid: string, locationName?: string): Promise<ZmanimData> {
-    console.log('🕯️ HebcalService: getShabbatTimes called with geonameid:', geonameid);
+  async getShabbatTimes(geonameid: string, locationName?: string, isZipCode?: boolean, zipCode?: string): Promise<ZmanimData> {
+    console.log('🕯️ HebcalService: getShabbatTimes called with geonameid:', geonameid, 'isZipCode:', isZipCode, 'zipCode:', zipCode);
     
     // Check cache first
     const cached = CacheService.getCachedZmanimData(geonameid);
@@ -141,7 +145,12 @@ class HebcalService {
     }
 
     try {
-      const url = `${this.baseUrl}/shabbat?geonameid=${geonameid}`;
+      let url: string;
+      if (isZipCode && zipCode) {
+        url = `${this.baseUrl}/shabbat?zip=${zipCode}`;
+      } else {
+        url = `${this.baseUrl}/shabbat?geonameid=${geonameid}`;
+      }
       console.log('🕯️ HebcalService: Fetching URL:', url);
       
       const response = await fetch(url);

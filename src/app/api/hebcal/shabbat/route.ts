@@ -4,18 +4,24 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const geonameid = searchParams.get('geonameid');
+    const zipCode = searchParams.get('zip');
     
-    if (!geonameid) {
+    if (!geonameid && !zipCode) {
       return NextResponse.json(
-        { error: 'Geonameid parameter is required' },
+        { error: 'Geonameid or zip parameter is required' },
         { status: 400 }
       );
     }
 
-    console.log('🕯️ API: Fetching Shabbat times for geonameid:', geonameid);
+    console.log('🕯️ API: Fetching Shabbat times for geonameid:', geonameid, 'zip:', zipCode);
 
-    // Call Hebcal API from server
-    const hebcalUrl = `https://www.hebcal.com/shabbat?cfg=json&geonameid=${geonameid}&maj=on&min=on&mod=on&nx=on&year=now&month=x&ss=on&mf=on&c=on&geo=geoname&geonameid=${geonameid}`;
+    // Call Hebcal API from server - use zip parameter if available, otherwise geonameid
+    let hebcalUrl: string;
+    if (zipCode) {
+      hebcalUrl = `https://www.hebcal.com/shabbat?cfg=json&zip=${zipCode}&maj=on&min=on&mod=on&nx=on&year=now&month=x&ss=on&mf=on&c=on`;
+    } else {
+      hebcalUrl = `https://www.hebcal.com/shabbat?cfg=json&geonameid=${geonameid}&maj=on&min=on&mod=on&nx=on&year=now&month=x&ss=on&mf=on&c=on&geo=geoname&geonameid=${geonameid}`;
+    }
     console.log('🕯️ API: Calling Hebcal URL:', hebcalUrl);
 
     const response = await fetch(hebcalUrl, {

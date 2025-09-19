@@ -9,6 +9,8 @@ export interface LocationInfo {
   name: string;
   coordinates: Coordinates;
   geonameid?: string;
+  isZipCode?: boolean;
+  zipCode?: string;
 }
 
 class LocationService {
