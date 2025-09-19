@@ -14,6 +14,7 @@ import {
   LocationInfo, 
   AppError 
 } from '@/types';
+import { trackError, trackCacheHit, trackCacheMiss } from '@/utils/analytics';
 
 export default function Home() {
   const [location, setLocation] = useState<string>('');
@@ -70,6 +71,9 @@ export default function Home() {
       const error = createAppError(err, 'initializing app');
       setAppError(error);
       setError(error.message);
+      
+      // Track error
+      trackError(error.type, error.message, 'initializing app');
     } finally {
       setLoading(false);
     }
@@ -142,8 +146,15 @@ export default function Home() {
         setZmanimData(cachedData);
         setError('');
         setAppError(null);
+        
+        // Track cache hit
+        trackCacheHit(selectedLocation.geonameid, selectedLocation.name);
       } else {
         console.log('🏠 Main App: Fetching zmanim data for geonameid:', selectedLocation.geonameid);
+        
+        // Track cache miss
+        trackCacheMiss(selectedLocation.geonameid, selectedLocation.name);
+        
         await fetchZmanimData(selectedLocation.geonameid, selectedLocation.name, selectedLocation.isZipCode, selectedLocation.zipCode);
       }
     } catch (err) {
@@ -151,6 +162,9 @@ export default function Home() {
       const error = createAppError(err, 'changing location');
       setAppError(error);
       setError(error.message);
+      
+      // Track error
+      trackError(error.type, error.message, 'changing location');
     } finally {
       setLoading(false);
     }
@@ -187,8 +201,15 @@ export default function Home() {
         setZmanimData(cachedData);
         setError('');
         setAppError(null);
+        
+        // Track cache hit
+        trackCacheHit(locationData.geonameid, locationData.name);
       } else {
         console.log('🏠 Main App: Fetching zmanim data for geonameid:', locationData.geonameid);
+        
+        // Track cache miss
+        trackCacheMiss(locationData.geonameid, locationData.name);
+        
         await fetchZmanimData(locationData.geonameid, locationData.name, locationData.isZipCode, locationData.zipCode);
       }
     } catch (err) {
@@ -196,6 +217,9 @@ export default function Home() {
       const error = createAppError(err, 'selecting location');
       setAppError(error);
       setError(error.message);
+      
+      // Track error
+      trackError(error.type, error.message, 'selecting location');
     } finally {
       setLoading(false);
     }

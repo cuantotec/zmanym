@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { hebcalService } from '@/services/hebcal';
 import { LocationData, LocationSearchProps } from '@/types';
+import { trackLocationSearch, trackLocationSelect, trackZipCodeSearch, trackCitySearch } from '@/utils/analytics';
 
 export default function LocationSearch({ currentLocation, onLocationChange, onLocationSelect, loading, hasData, cachedZmanimData, onCacheData }: LocationSearchProps) {
   const [isSearching, setIsSearching] = useState(false);
@@ -52,6 +53,17 @@ export default function LocationSearch({ currentLocation, onLocationChange, onLo
           setSearchResults(results.slice(0, 5)); // Limit to 5 results
           setShowResults(results.length > 0);
           console.log('🔍 LocationSearch: Set showResults to:', results.length > 0);
+          
+          // Track search analytics
+          trackLocationSearch(searchQuery, results.length);
+          
+          // Track specific search types
+          const isZipCode = /^\d{5}(-\d{4})?$/.test(searchQuery);
+          if (isZipCode) {
+            trackZipCodeSearch(searchQuery, results.length);
+          } else {
+            trackCitySearch(searchQuery, results.length);
+          }
           
           // Pre-fetch and cache data in the background (non-blocking)
           if (results.length > 0) {
@@ -127,6 +139,10 @@ export default function LocationSearch({ currentLocation, onLocationChange, onLo
     setSearchQuery(suggestion.name);
     setShowResults(false);
     setSearchResults([]); // Clear the search results
+    
+    // Track location selection
+    trackLocationSelect(suggestion.name, suggestion.isZipCode || false);
+    
     // Use the already fetched location data instead of searching again
     onLocationSelect(suggestion);
     // Keep the flag true until loading is complete - don't reset it automatically

@@ -7,6 +7,7 @@ import {
   GeolocationPosition,
   GeolocationError
 } from '@/types';
+import { trackGeolocationSuccess, trackGeolocationError } from '@/utils/analytics';
 
 class LocationService {
   private readonly STORAGE_KEY = 'zmanym_location';
@@ -30,6 +31,10 @@ class LocationService {
             longitude: position.coords.longitude
           };
           console.log('🌍 LocationService: Got coordinates:', coords);
+          
+          // Track successful geolocation
+          trackGeolocationSuccess(coords);
+          
           resolve(coords);
         },
         (error: GeolocationError) => {
@@ -49,6 +54,10 @@ class LocationService {
           }
           
           console.error('🌍 LocationService: Error message:', errorMessage);
+          
+          // Track geolocation error
+          trackGeolocationError(error.code, errorMessage);
+          
           reject(new Error(errorMessage));
         },
         {

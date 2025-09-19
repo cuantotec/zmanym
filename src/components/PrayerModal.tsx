@@ -8,6 +8,7 @@ import {
   Language, 
   TextSize
 } from '@/types';
+import { trackPrayerModalClose, trackPrayerLanguageChange, trackPrayerTextSizeChange } from '@/utils/analytics';
 
 export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }: PrayerModalProps) {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('english');
@@ -66,6 +67,28 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
     }
   };
 
+  const handleClose = () => {
+    // Track modal close with current settings
+    trackPrayerModalClose(prayerType, selectedLanguage, textSize);
+    onClose();
+  };
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    const oldLanguage = selectedLanguage;
+    setSelectedLanguage(newLanguage);
+    
+    // Track language change
+    trackPrayerLanguageChange(prayerType, oldLanguage, newLanguage);
+  };
+
+  const handleTextSizeChange = (newSize: TextSize) => {
+    const oldSize = textSize;
+    setTextSize(newSize);
+    
+    // Track text size change
+    trackPrayerTextSizeChange(prayerType, oldSize, newSize);
+  };
+
   const isRTL = selectedLanguage === 'hebrew' || selectedLanguage === 'englishHebrew';
 
   const getTextSizeClass = () => {
@@ -93,7 +116,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity"
-        onClick={onClose}
+        onClick={handleClose}
       />
       
       {/* Modal */}
@@ -108,7 +131,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
               </h2>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="rounded-xl p-3 text-gray-400 hover:bg-white/80 dark:hover:bg-gray-600/80 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-200 hover:scale-105"
             >
               <X className="h-6 w-6" />
@@ -126,7 +149,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
                 <select
                   id="language-select"
                   value={selectedLanguage}
-                  onChange={(e) => setSelectedLanguage(e.target.value as Language)}
+                    onChange={(e) => handleLanguageChange(e.target.value as Language)}
                   className="flex-1 max-w-xs px-4 py-3 text-sm border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
                 >
                   {(['english', 'englishPlain', 'englishHebrew', 'spanish', 'hebrew'] as Language[]).map((lang) => (
@@ -144,8 +167,8 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
                   <span>Size:</span>
                 </span>
                 <div className="flex items-center space-x-1 bg-white dark:bg-gray-700 rounded-lg p-1 border border-gray-200 dark:border-gray-600">
-                  <button
-                    onClick={() => setTextSize('small')}
+                     <button
+                       onClick={() => handleTextSizeChange('small')}
                     className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 ${
                       textSize === 'small'
                         ? 'bg-blue-500 text-white shadow-md'
@@ -154,8 +177,8 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
                   >
                     A
                   </button>
-                  <button
-                    onClick={() => setTextSize('medium')}
+                     <button
+                       onClick={() => handleTextSizeChange('medium')}
                     className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
                       textSize === 'medium'
                         ? 'bg-blue-500 text-white shadow-md'
@@ -164,8 +187,8 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
                   >
                     A
                   </button>
-                  <button
-                    onClick={() => setTextSize('large')}
+                     <button
+                       onClick={() => handleTextSizeChange('large')}
                     className={`px-3 py-1.5 text-base font-medium rounded-md transition-all duration-200 ${
                       textSize === 'large'
                         ? 'bg-blue-500 text-white shadow-md'
@@ -240,7 +263,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
           <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
             <div className="flex justify-end">
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 Close

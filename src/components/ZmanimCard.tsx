@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ZmanimCardProps, PrayerModalState, PrayerType } from '@/types';
 import PrayerModal from './PrayerModal';
+import { trackPrayerModalOpen, trackCandleLightingClick, trackHavdalahClick, trackHolidayClick } from '@/utils/analytics';
 
 export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
   const [prayerModal, setPrayerModal] = useState<PrayerModalState>({
@@ -16,6 +17,9 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
       type,
       holidayName
     });
+    
+    // Track prayer modal opening
+    trackPrayerModalOpen(type, holidayName);
   };
 
   const closePrayerModal = () => {
@@ -70,7 +74,10 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
           {/* Candle Lighting */}
           <div 
             className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-900/20 dark:via-amber-900/20 dark:to-yellow-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-orange-200/50 dark:border-orange-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
-            onClick={() => openPrayerModal('candleLighting')}
+            onClick={() => {
+              trackCandleLightingClick(location, zmanimData.candleLighting);
+              openPrayerModal('candleLighting');
+            }}
           >
             {/* Single flex row: icon + content column */}
             <div className="flex items-start gap-4 sm:gap-6">
@@ -126,7 +133,10 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
           {/* Havdalah */}
           <div 
             className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-900/20 dark:via-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-purple-200/50 dark:border-purple-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
-            onClick={() => openPrayerModal('havdalah')}
+            onClick={() => {
+              trackHavdalahClick(location, zmanimData.havdalah);
+              openPrayerModal('havdalah');
+            }}
           >
             {/* Single flex row: icon + content column */}
             <div className="flex items-start gap-4 sm:gap-6">
@@ -219,7 +229,10 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                 <div 
                   key={index} 
                   className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
-                  onClick={() => openPrayerModal('holiday', holiday.title)}
+                  onClick={() => {
+                    trackHolidayClick(holiday.title, holiday.date);
+                    openPrayerModal('holiday', holiday.title);
+                  }}
                 >
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
