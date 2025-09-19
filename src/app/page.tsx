@@ -329,13 +329,13 @@ export default function Home() {
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <span>US locations only</span>
-                </li>
+          </li>
                 <li className="flex items-center space-x-2">
                   <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <span>Mobile responsive</span>
-                </li>
+          </li>
               </ul>
             </div>
 
@@ -353,14 +353,45 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                © 2025 Zmanym. All rights reserved.
-              </p>
-              <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
-                <span>Made with ❤️ for the Jewish community</span>
+          {/* Enhanced Footer */}
+          <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 mb-6">
+              <div className="text-center sm:text-left">
+                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                  © 2025 Zmanym
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  All rights reserved
+                </p>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-red-500">❤️</span>
+                <span className="font-medium">Made with love for the Jewish community</span>
+              </div>
+            </div>
+            
+            <div className="pt-6 border-t border-gray-100 dark:border-gray-800">
+              <div className="text-center">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Developed With Love By
+                </p>
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-base font-bold text-gray-800 dark:text-gray-200">
+                    Eliran Yihye
+                  </span>
+                  <span className="text-gray-400 dark:text-gray-600">|</span>
+                  <a 
+                    href="https://cuantotec.com" 
+            target="_blank"
+            rel="noopener noreferrer"
+                    className="text-base font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 hover:underline decoration-2 underline-offset-2"
+                  >
+                    Cuanto Technologies
+          </a>
+        </div>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                  Building innovative solutions for the modern world
+                </p>
               </div>
             </div>
           </div>

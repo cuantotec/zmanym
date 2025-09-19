@@ -173,12 +173,15 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
           {/* Holidays List */}
           <div className="space-y-3">
             {zmanimData.holidays.map((holiday, index) => {
-              const holidayDate = new Date(holiday.date);
+              // Parse the date string as local date to avoid timezone issues
+              const [year, month, day] = holiday.date.split('-').map(Number);
+              const holidayDate = new Date(year, month - 1, day); // month is 0-indexed
               const formattedDate = holidayDate.toLocaleDateString('en-US', {
                 weekday: 'short',
                 month: 'short',
                 day: 'numeric'
               });
+              
               
               return (
                 <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md transition-all duration-200">
@@ -195,6 +198,11 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                       <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                         {holiday.category}
                       </p>
+                      {holiday.candleLighting && holiday.candleLighting.trim() !== '' && (
+                        <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-1">
+                          Candle lighting: {holiday.candleLighting}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

@@ -14,6 +14,7 @@ export interface Holiday {
   title: string;
   date: string;
   category: string;
+  candleLighting?: string;
 }
 
 export interface ZmanimData {
