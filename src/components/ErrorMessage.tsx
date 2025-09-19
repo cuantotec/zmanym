@@ -1,10 +1,4 @@
-import { AppError } from '@/utils/errorHandler';
-
-interface ErrorMessageProps {
-  message: string;
-  error?: AppError | null;
-  onRetry?: () => void;
-}
+import { ErrorMessageProps } from '@/types';
 
 export default function ErrorMessage({ message, error, onRetry }: ErrorMessageProps) {
   const handleRetry = () => {

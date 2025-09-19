@@ -1,13 +1,6 @@
 // Cache service for storing Shabbat times and other data in localStorage
 
-import { ZmanimData } from './hebcal';
-
-export interface CachedZmanimData {
-  data: ZmanimData;
-  timestamp: number;
-  geonameid: string;
-  location: string;
-}
+import { ZmanimData, CachedZmanimData } from '@/types';
 
 export class CacheService {
   private static readonly ZMANIM_CACHE_KEY = 'zmanym_zmanim_cache';

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiErrorResponse } from '@/types';
 
 export async function GET(request: NextRequest) {
   try {
@@ -7,7 +8,7 @@ export async function GET(request: NextRequest) {
     const lng = searchParams.get('lng');
     
     if (!lat || !lng) {
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Latitude and longitude parameters are required' },
         { status: 400 }
       );
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     if (!response.ok) {
       console.error('🌍 API: Hebcal response not OK:', response.status, response.statusText);
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Failed to fetch from Hebcal API' },
         { status: response.status }
       );
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
 
     if (!geonameid) {
       console.error('🌍 API: No geonameid found in response');
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'No location found for coordinates' },
         { status: 404 }
       );
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('🌍 API: Error in coords route:', error);
-    return NextResponse.json(
+    return NextResponse.json<ApiErrorResponse>(
       { error: 'Internal server error' },
       { status: 500 }
     );

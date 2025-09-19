@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { LocationData, ApiErrorResponse } from '@/types';
 
 export async function GET(request: NextRequest) {
   console.log('🔍 API: Search route called with URL:', request.url);
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
     
     if (!query) {
       console.log('🔍 API: No query parameter provided');
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Query parameter is required' },
         { status: 400 }
       );
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
 
     if (!response.ok) {
       console.error('🔍 API: Hebcal response not OK:', response.status, response.statusText);
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Failed to fetch from Hebcal API' },
         { status: response.status }
       );
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
     console.log('🔍 API: Hebcal response data:', data);
 
     // Transform the data to our format and filter for US locations only
-    let locations = [];
+    let locations: LocationData[] = [];
     if (Array.isArray(data)) {
       // Filter for US locations only
       const usLocations = data.filter((item: unknown) => {
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
         return location.cc === 'US' || location.country === 'United States';
       });
       
-      locations = usLocations.map((item: unknown) => {
+      locations = usLocations.map((item: unknown): LocationData => {
         const location = item as Record<string, unknown>;
         const isZipCode = location.geo === 'zip';
         
@@ -72,7 +73,7 @@ export async function GET(request: NextRequest) {
         return location.cc === 'US' || location.country === 'United States';
       });
       
-      locations = usLocations.map((item: unknown) => {
+      locations = usLocations.map((item: unknown): LocationData => {
         const location = item as Record<string, unknown>;
         const isZipCode = location.geo === 'zip';
         
@@ -95,7 +96,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('🔍 API: Error in search route:', error);
-    return NextResponse.json(
+    return NextResponse.json<ApiErrorResponse>(
       { error: 'Internal server error' },
       { status: 500 }
     );

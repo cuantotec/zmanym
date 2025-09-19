@@ -1,10 +1,6 @@
 // Error handling utilities
 
-export interface AppError {
-  message: string;
-  type: 'network' | 'location' | 'api' | 'permission' | 'unknown';
-  retryable: boolean;
-}
+import { AppError } from '@/types';
 
 export function createAppError(error: unknown, context: string): AppError {
   console.error(`Error in ${context}:`, error);

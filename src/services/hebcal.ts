@@ -1,50 +1,10 @@
 // Hebcal API service for fetching Jewish calendar data
 
 import { CacheService } from './cache';
-
-export interface LocationData {
-  geonameid: string;
-  name: string;
-  country: string;
-  admin1?: string;
-  admin2?: string;
-  isZipCode?: boolean;
-  zipCode?: string;
-  latitude?: number;
-  longitude?: number;
-}
-
-export interface Holiday {
-  title: string;
-  date: string;
-  category: string;
-  candleLighting?: string;
-}
-
-export interface ZmanimData {
-  candleLighting: string;
-  havdalah: string;
-  parsha: string;
-  gregorianDate: string;
-  hebrewDate: string;
-  location: string;
-  holidays: Holiday[];
-}
-
-export interface HebcalResponse {
-  items: Array<{
-    title: string;
-    date: string;
-    category: string;
-    hebrew?: string;
-  }>;
-  location: {
-    geo: string;
-    city: string;
-    country: string;
-    tzid: string;
-  };
-}
+import { 
+  LocationData, 
+  ZmanimData
+} from '@/types';
 
 class HebcalService {
   private baseUrl = '/api/hebcal';

@@ -1,17 +1,12 @@
 // Location service for handling geolocation and location management
 
-export interface Coordinates {
-  latitude: number;
-  longitude: number;
-}
-
-export interface LocationInfo {
-  name: string;
-  coordinates: Coordinates;
-  geonameid?: string;
-  isZipCode?: boolean;
-  zipCode?: string;
-}
+import { 
+  Coordinates, 
+  LocationInfo, 
+  ReverseGeocodingResponse,
+  GeolocationPosition,
+  GeolocationError
+} from '@/types';
 
 class LocationService {
   private readonly STORAGE_KEY = 'zmanym_location';
@@ -29,15 +24,15 @@ class LocationService {
 
       console.log('🌍 LocationService: Requesting geolocation...');
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = {
+        (position: GeolocationPosition) => {
+          const coords: Coordinates = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           };
           console.log('🌍 LocationService: Got coordinates:', coords);
           resolve(coords);
         },
-        (error) => {
+        (error: GeolocationError) => {
           console.error('🌍 LocationService: Geolocation error:', error);
           let errorMessage = 'Unable to get your location';
           
@@ -115,7 +110,7 @@ class LocationService {
         throw new Error('Reverse geocoding failed');
       }
 
-      const data = await response.json();
+      const data: ReverseGeocodingResponse = await response.json();
       console.log('🌍 LocationService: Reverse geocoding data:', data);
       
       const city = data.city || data.locality || 'Unknown';

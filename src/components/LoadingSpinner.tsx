@@ -1,6 +1,4 @@
-interface LoadingSpinnerProps {
-  message?: string;
-}
+import { LoadingSpinnerProps } from '@/types';
 
 export default function LoadingSpinner({ message = "Loading Shabbat times..." }: LoadingSpinnerProps) {
   return (

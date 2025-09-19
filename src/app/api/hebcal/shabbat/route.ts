@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ZmanimData, ApiErrorResponse, HebcalResponse, HebcalItem } from '@/types';
 
 export async function GET(request: NextRequest) {
   try {
@@ -7,7 +8,7 @@ export async function GET(request: NextRequest) {
     const zipCode = searchParams.get('zip');
     
     if (!geonameid && !zipCode) {
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Geonameid or zip parameter is required' },
         { status: 400 }
       );
@@ -32,57 +33,46 @@ export async function GET(request: NextRequest) {
 
     if (!response.ok) {
       console.error('🕯️ API: Hebcal response not OK:', response.status, response.statusText);
-      return NextResponse.json(
+      return NextResponse.json<ApiErrorResponse>(
         { error: 'Failed to fetch from Hebcal API' },
         { status: response.status }
       );
     }
 
-    const data = await response.json();
+    const data: HebcalResponse = await response.json();
     console.log('🕯️ API: Hebcal response data:', data);
 
     // Parse the response to extract zmanim data
     const items = data.items || [];
     console.log('🕯️ API: Items found:', items.length);
-    console.log('🕯️ API: All items:', items.map((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      return {
-        category: itemData.category,
-        title: itemData.title,
-        hebrew: itemData.hebrew
-      };
-    }));
+    console.log('🕯️ API: All items:', items.map((item: HebcalItem) => ({
+      category: item.category,
+      title: item.title,
+      hebrew: item.hebrew
+    })));
     
     // Find candle lighting time
-    const candleLightingItem = items.find((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      return itemData.category === 'candles' && 
-             typeof itemData.title === 'string' && 
-             itemData.title.includes('Candle lighting');
-    });
+    const candleLightingItem = items.find((item: HebcalItem) => 
+      item.category === 'candles' && 
+      item.title.includes('Candle lighting')
+    );
     
     // Find Havdalah time
-    const havdalahItem = items.find((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      return itemData.category === 'havdalah' && 
-             typeof itemData.title === 'string' && 
-             itemData.title.includes('Havdalah');
-    });
+    const havdalahItem = items.find((item: HebcalItem) => 
+      item.category === 'havdalah' && 
+      item.title.includes('Havdalah')
+    );
     
     // Find Parsha - try multiple patterns
-    const parshaItem = items.find((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      const title = itemData.title as string;
-      return itemData.category === 'holiday' && 
-             typeof title === 'string' && 
-             (title.includes('Parashat') || title.includes('parashat') || title.includes('Torah'));
-    });
+    const parshaItem = items.find((item: HebcalItem) => 
+      item.category === 'holiday' && 
+      (item.title.includes('Parashat') || item.title.includes('parashat') || item.title.includes('Torah'))
+    );
     
     // Find Hebrew date
-    const hebrewDateItem = items.find((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      return itemData.category === 'holiday' && itemData.hebrew;
-    });
+    const hebrewDateItem = items.find((item: HebcalItem) => 
+      item.category === 'holiday' && item.hebrew
+    );
 
     const extractTime = (title: string): string => {
       const timeMatch = title.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
@@ -90,39 +80,32 @@ export async function GET(request: NextRequest) {
     };
 
     const candleLighting = candleLightingItem 
-      ? extractTime((candleLightingItem as Record<string, unknown>).title as string)
+      ? extractTime(candleLightingItem.title)
       : 'Not available';
     
     const havdalah = havdalahItem 
-      ? extractTime((havdalahItem as Record<string, unknown>).title as string)
+      ? extractTime(havdalahItem.title)
       : 'Not available';
     
     let parsha = 'Not available';
     if (parshaItem) {
-      const title = (parshaItem as Record<string, unknown>).title as string;
-      parsha = title.replace('Parashat ', '').replace('parashat ', '');
+      parsha = parshaItem.title.replace('Parashat ', '').replace('parashat ', '');
     } else {
       // Try to find Parsha in other categories
-      const alternativeParshaItem = items.find((item: unknown) => {
-        const itemData = item as Record<string, unknown>;
-        const title = itemData.title as string;
-        return typeof title === 'string' && 
-               (title.includes('Parashat') || title.includes('parashat') || 
-                title.includes('Torah') || title.includes('Weekly'));
-      });
+      const alternativeParshaItem = items.find((item: HebcalItem) => 
+        item.title.includes('Parashat') || item.title.includes('parashat') || 
+        item.title.includes('Torah') || item.title.includes('Weekly')
+      );
       
       if (alternativeParshaItem) {
-        const title = (alternativeParshaItem as Record<string, unknown>).title as string;
-        parsha = title.replace('Parashat ', '').replace('parashat ', '');
+        parsha = alternativeParshaItem.title.replace('Parashat ', '').replace('parashat ', '');
       }
     }
     
-    const hebrewDate = hebrewDateItem 
-      ? (hebrewDateItem as Record<string, unknown>).hebrew as string
-      : 'Not available';
+    const hebrewDate = hebrewDateItem?.hebrew || 'Not available';
     
     const gregorianDate = candleLightingItem 
-      ? new Date((candleLightingItem as Record<string, unknown>).date as string).toLocaleDateString('en-US', {
+      ? new Date(candleLightingItem.date).toLocaleDateString('en-US', {
           weekday: 'long',
           year: 'numeric',
           month: 'long',
@@ -135,52 +118,38 @@ export async function GET(request: NextRequest) {
       'Location not available';
 
     // Parse holidays and find their candle lighting times
-    const holidayItems = items.filter((item: unknown) => {
-      const itemData = item as Record<string, unknown>;
-      const category = itemData.category as string;
-      const title = itemData.title as string;
-      
+    const holidayItems = items.filter((item: HebcalItem) => {
       // Include major holidays, minor holidays, and special days
-      return (category === 'holiday' || category === 'major' || category === 'minor') &&
-             typeof title === 'string' &&
-             !title.includes('Parashat') && // Exclude Parsha
-             !title.includes('parashat') &&
-             !title.includes('Torah') &&
-             !title.includes('Weekly') &&
-             !title.includes('Candle lighting') && // Exclude Shabbat times
-             !title.includes('Havdalah') &&
-             !/[\u0590-\u05FF]/.test(title); // Exclude Hebrew text
+      return (item.category === 'holiday' || item.category === 'major' || item.category === 'minor') &&
+             !item.title.includes('Parashat') && // Exclude Parsha
+             !item.title.includes('parashat') &&
+             !item.title.includes('Torah') &&
+             !item.title.includes('Weekly') &&
+             !item.title.includes('Candle lighting') && // Exclude Shabbat times
+             !item.title.includes('Havdalah') &&
+             !/[\u0590-\u05FF]/.test(item.title); // Exclude Hebrew text
     });
 
-    const holidays = holidayItems.map((holidayItem: unknown) => {
-      const holidayData = holidayItem as Record<string, unknown>;
-      const holidayTitle = holidayData.title as string;
-      const holidayDate = holidayData.date as string;
-      const holidayCategory = holidayData.category as string;
-      
+    const holidays = holidayItems.map((holidayItem: HebcalItem) => {
       // Find corresponding candle lighting time for this holiday
-      const candleLightingForHoliday = items.find((item: unknown) => {
-        const itemData = item as Record<string, unknown>;
-        const memo = itemData.memo as string;
-        return itemData.category === 'candles' && 
-               typeof memo === 'string' && 
-               memo.includes(holidayTitle);
-      });
+      const candleLightingForHoliday = items.find((item: HebcalItem) => 
+        item.category === 'candles' && 
+        item.memo?.includes(holidayItem.title)
+      );
       
       let candleLightingTime = '';
       if (candleLightingForHoliday) {
-        const candleTitle = (candleLightingForHoliday as Record<string, unknown>).title as string;
-        const timeMatch = candleTitle.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+        const timeMatch = candleLightingForHoliday.title.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
         candleLightingTime = timeMatch ? timeMatch[1] : '';
-        console.log(`🕯️ API: Found candle lighting for ${holidayTitle}: ${candleLightingTime}`);
+        console.log(`🕯️ API: Found candle lighting for ${holidayItem.title}: ${candleLightingTime}`);
       } else {
-        console.log(`🕯️ API: No candle lighting found for ${holidayTitle}`);
+        console.log(`🕯️ API: No candle lighting found for ${holidayItem.title}`);
       }
       
       return {
-        title: holidayTitle,
-        date: holidayDate,
-        category: holidayCategory,
+        title: holidayItem.title,
+        date: holidayItem.date,
+        category: holidayItem.category,
         candleLighting: candleLightingTime
       };
     }).slice(0, 10); // Limit to 10 holidays
@@ -195,7 +164,7 @@ export async function GET(request: NextRequest) {
       holidays: holidays.length
     });
 
-    const zmanimData = {
+    const zmanimData: ZmanimData = {
       candleLighting,
       havdalah,
       parsha,
@@ -206,11 +175,11 @@ export async function GET(request: NextRequest) {
     };
 
     console.log('🕯️ API: Returning zmanim data:', zmanimData);
-    return NextResponse.json(zmanimData);
+    return NextResponse.json<ZmanimData>(zmanimData);
 
   } catch (error) {
     console.error('🕯️ API: Error in shabbat route:', error);
-    return NextResponse.json(
+    return NextResponse.json<ApiErrorResponse>(
       { error: 'Internal server error' },
       { status: 500 }
     );

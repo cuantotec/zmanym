@@ -1,17 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { hebcalService, LocationData, ZmanimData } from '@/services/hebcal';
-
-interface LocationSearchProps {
-  currentLocation: string;
-  onLocationChange: (location: string) => void;
-  onLocationSelect: (locationData: LocationData) => void;
-  loading: boolean;
-  hasData: boolean;
-  cachedZmanimData: Map<string, ZmanimData>;
-  onCacheData: (geonameid: string, data: ZmanimData) => void;
-}
+import { hebcalService } from '@/services/hebcal';
+import { LocationData, LocationSearchProps } from '@/types';
 
 export default function LocationSearch({ currentLocation, onLocationChange, onLocationSelect, loading, hasData, cachedZmanimData, onCacheData }: LocationSearchProps) {
   const [isSearching, setIsSearching] = useState(false);

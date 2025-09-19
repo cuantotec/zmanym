@@ -5,9 +5,15 @@ import LocationSearch from '@/components/LocationSearch';
 import ZmanimCard from '@/components/ZmanimCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
-import { hebcalService, ZmanimData, LocationData } from '@/services/hebcal';
-import { locationService, LocationInfo } from '@/services/location';
-import { createAppError, AppError } from '@/utils/errorHandler';
+import { hebcalService } from '@/services/hebcal';
+import { locationService } from '@/services/location';
+import { createAppError } from '@/utils/errorHandler';
+import { 
+  ZmanimData, 
+  LocationData, 
+  LocationInfo, 
+  AppError 
+} from '@/types';
 
 export default function Home() {
   const [location, setLocation] = useState<string>('');

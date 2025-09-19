@@ -2,36 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-
-export interface PrayerData {
-  title: string;
-  text: string;
-  transliteration?: string;
-  instructions?: string;
-}
-
-export interface PrayerContent {
-  english: PrayerData;
-  englishPlain: PrayerData;
-  englishHebrew: PrayerData;
-  spanish: PrayerData;
-  hebrew: PrayerData;
-}
-
-export interface PrayerModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  prayerType: 'candleLighting' | 'havdalah' | 'holiday';
-  holidayName?: string;
-}
-
-type Language = 'english' | 'englishPlain' | 'englishHebrew' | 'spanish' | 'hebrew';
+import { 
+  PrayerModalProps, 
+  PrayerContent, 
+  Language, 
+  TextSize
+} from '@/types';
 
 export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }: PrayerModalProps) {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('english');
   const [prayerData, setPrayerData] = useState<PrayerContent | null>(null);
   const [loading, setLoading] = useState(false);
-  const [textSize, setTextSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [textSize, setTextSize] = useState<TextSize>('medium');
 
   // Load prayer data when modal opens
   useEffect(() => {

@@ -1,25 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { ZmanimData } from '@/services/hebcal';
+import { ZmanimCardProps, PrayerModalState, PrayerType } from '@/types';
 import PrayerModal from './PrayerModal';
 
-interface ZmanimCardProps {
-  location: string;
-  zmanimData: ZmanimData;
-}
-
 export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
-  const [prayerModal, setPrayerModal] = useState<{
-    isOpen: boolean;
-    type: 'candleLighting' | 'havdalah' | 'holiday';
-    holidayName?: string;
-  }>({
+  const [prayerModal, setPrayerModal] = useState<PrayerModalState>({
     isOpen: false,
     type: 'candleLighting'
   });
 
-  const openPrayerModal = (type: 'candleLighting' | 'havdalah' | 'holiday', holidayName?: string) => {
+  const openPrayerModal = (type: PrayerType, holidayName?: string) => {
     setPrayerModal({
       isOpen: true,
       type,
