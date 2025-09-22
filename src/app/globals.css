@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  /* Dark mode configuration for Tailwind v4 */
+  --default: light;
+  --dark: dark;
   --color-blue-50: #eff6ff;
   --color-blue-100: #dbeafe;
   --color-blue-200: #bfdbfe;
@@ -116,13 +119,61 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  
+  /* Theme variables for better control */
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f8fafc;
+  --theme-bg-tertiary: #f1f5f9;
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  --theme-text-tertiary: #64748b;
+  --theme-border: #e2e8f0;
+  --theme-border-light: #f1f5f9;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.15);
 }
 
+/* Light theme (explicit) */
+.light {
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f8fafc;
+  --theme-bg-tertiary: #f1f5f9;
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  --theme-text-tertiary: #64748b;
+  --theme-border: #e2e8f0;
+  --theme-border-light: #f1f5f9;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme (explicit) */
+.dark {
+  --theme-bg-primary: #0f172a;
+  --theme-bg-secondary: #1e293b;
+  --theme-bg-tertiary: #334155;
+  --theme-text-primary: #f8fafc;
+  --theme-text-secondary: #cbd5e1;
+  --theme-text-tertiary: #94a3b8;
+  --theme-border: #475569;
+  --theme-border-light: #334155;
+  --theme-shadow: rgba(0, 0, 0, 0.3);
+  --theme-shadow-lg: rgba(0, 0, 0, 0.4);
+}
+
+/* System preference fallback */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  :root:not(.light):not(.dark) {
+    --theme-bg-primary: #0f172a;
+    --theme-bg-secondary: #1e293b;
+    --theme-bg-tertiary: #334155;
+    --theme-text-primary: #f8fafc;
+    --theme-text-secondary: #cbd5e1;
+    --theme-text-tertiary: #94a3b8;
+    --theme-border: #475569;
+    --theme-border-light: #334155;
+    --theme-shadow: rgba(0, 0, 0, 0.3);
+    --theme-shadow-lg: rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -312,6 +363,47 @@ body {
 
 .glass-heavy {
   @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg;
+}
+
+/* Theme utility classes */
+.theme-bg-primary {
+  background-color: var(--theme-bg-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--theme-bg-secondary);
+}
+
+.theme-bg-tertiary {
+  background-color: var(--theme-bg-tertiary);
+}
+
+.theme-text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-text-tertiary {
+  color: var(--theme-text-tertiary);
+}
+
+.theme-border {
+  border-color: var(--theme-border);
+}
+
+.theme-border-light {
+  border-color: var(--theme-border-light);
+}
+
+.theme-shadow {
+  box-shadow: 0 1px 3px 0 var(--theme-shadow), 0 1px 2px 0 var(--theme-shadow);
+}
+
+.theme-shadow-lg {
+  box-shadow: 0 10px 15px -3px var(--theme-shadow-lg), 0 4px 6px -2px var(--theme-shadow-lg);
 }
 
 /* Hebrew font support */

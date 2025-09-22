@@ -14,7 +14,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('english');
   const [prayerData, setPrayerData] = useState<PrayerContent | null>(null);
   const [loading, setLoading] = useState(false);
-  const [textSize, setTextSize] = useState<TextSize>('medium');
+  const [textSize, setTextSize] = useState<TextSize>('small');
 
   // Load prayer data when modal opens
   useEffect(() => {
@@ -140,8 +140,9 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
 
           {/* Language Dropdown */}
           <div className="border-b border-gray-200/50 dark:border-gray-700/50 px-8 py-6 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-gray-800">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+            <div className="space-y-4">
+              {/* Language Selector */}
+              <div className="flex items-center justify-center space-x-4">
                 <label htmlFor="language-select" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center space-x-2">
                   <span>🌐</span>
                   <span>Language:</span>
@@ -161,7 +162,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
               </div>
               
               {/* Text Size Controls */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center space-x-2">
                 <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center space-x-2">
                   <span>🔤</span>
                   <span>Size:</span>

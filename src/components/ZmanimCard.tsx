@@ -11,6 +11,10 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
     type: 'candleLighting'
   });
 
+  // Determine if we're in holiday mode
+  const isHolidayMode = zmanimData.holidays && zmanimData.holidays.length > 0;
+  const currentHoliday = isHolidayMode ? zmanimData.holidays[0] : null;
+
   const openPrayerModal = (type: PrayerType, holidayName?: string) => {
     setPrayerModal({
       isOpen: true,
@@ -32,57 +36,61 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-in">
       {/* Main Zmanim Card */}
-      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 p-6 sm:p-8 transform transition-all duration-300 hover:shadow-3xl hover:scale-[1.02]">
+      <div className="bg-gray-800/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-600/30 dark:border-gray-500/30 p-4 sm:p-6 lg:p-8 transform transition-all duration-300 hover:shadow-xl hover:scale-[1.01]">
         {/* Header Section */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-700 rounded-2xl flex items-center justify-center shadow-md">
               <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent mb-3">
-            This Shabbat
+          <h2 className="text-2xl sm:text-3xl font-bold text-white dark:text-gray-100 mb-3">
+            {isHolidayMode ? (currentHoliday?.title || 'Holiday') : 'This Shabbat'}
           </h2>
           <div className="space-y-2">
-            <p className="text-lg text-gray-700 dark:text-gray-300 font-medium">
+            <p className="text-lg text-gray-200 dark:text-gray-300 font-medium">
               {zmanimData.gregorianDate}
             </p>
-            <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-500">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>{location}</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 text-sm text-gray-400 dark:text-gray-500">
+              <div className="flex items-center space-x-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <span className="text-xs sm:text-sm">{location}</span>
             </div>
           </div>
         </div>
 
-        {/* Weekly Parsha */}
-        <div className="text-center mb-6">
-          <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-            Weekly Torah Portion: <span className="text-blue-600 dark:text-blue-400 font-bold">{zmanimData.parsha}</span>
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 italic">
-            Press on anything to view prayer
-          </p>
-        </div>
+        {/* Weekly Parsha - only show for Shabbat, not holidays */}
+        {!isHolidayMode && (
+          <div className="text-center mb-6">
+            <p className="text-lg font-semibold text-gray-200 dark:text-gray-300">
+              Weekly Torah Portion: <span className="text-blue-400 dark:text-blue-400 font-bold">{zmanimData.parsha}</span>
+            </p>
+            <p className="text-sm text-gray-400 dark:text-gray-400 mt-2 italic">
+              Press on anything to view prayer
+            </p>
+          </div>
+        )}
 
         {/* Times Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
           {/* Candle Lighting */}
           <div 
-            className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-orange-900/20 dark:via-amber-900/20 dark:to-yellow-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-orange-200/50 dark:border-orange-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
+            className="bg-gradient-to-br from-orange-900/20 via-amber-900/20 to-yellow-900/20 dark:from-orange-900/30 dark:via-amber-900/30 dark:to-yellow-900/30 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-orange-700/30 dark:border-orange-600/30 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
             onClick={() => {
               trackCandleLightingClick(location, zmanimData.candleLighting);
               openPrayerModal('candleLighting');
             }}
           >
-            {/* Single flex row: icon + content column */}
-            <div className="flex items-start gap-4 sm:gap-6">
+            {/* Responsive layout: stacked on mobile, side-by-side on desktop */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
               {/* Icon */}
-              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0">
                 {/* Animated candle flame */}
                 <div className="relative">
                   <svg className="w-12 h-12 sm:w-14 sm:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -113,17 +121,17 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
               </div>
               
               {/* Content column */}
-              <div className="flex flex-col flex-1">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <div className="flex flex-col flex-1 text-center sm:text-left">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white dark:text-white mb-2">
                   Candle Lighting
                 </h3>
-                <p className="text-4xl sm:text-5xl font-black text-orange-600 dark:text-orange-400 mb-3">
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-black text-orange-400 dark:text-orange-400 mb-3">
                   {zmanimData.candleLighting}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">
-                  Light candles 18 minutes before sunset
+                <p className="text-sm text-gray-300 dark:text-gray-400 leading-relaxed group-hover:text-orange-300 dark:group-hover:text-orange-300 transition-colors">
+                  {isHolidayMode ? 'Light candles for the holiday' : 'Light candles 18 minutes before sunset'}
                 </p>
-                <div className="mt-2 text-xs text-orange-600 dark:text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-2 text-xs text-orange-400 dark:text-orange-400">
                   Click to view prayer
                 </div>
               </div>
@@ -132,16 +140,16 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
 
           {/* Havdalah */}
           <div 
-            className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-900/20 dark:via-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 sm:p-8 shadow-lg border border-purple-200/50 dark:border-purple-800/50 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
+            className="bg-gradient-to-br from-purple-900/20 via-indigo-900/20 to-blue-900/20 dark:from-purple-900/30 dark:via-indigo-900/30 dark:to-blue-900/30 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-purple-700/30 dark:border-purple-600/30 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
             onClick={() => {
               trackHavdalahClick(location, zmanimData.havdalah);
               openPrayerModal('havdalah');
             }}
           >
-            {/* Single flex row: icon + content column */}
-            <div className="flex items-start gap-4 sm:gap-6">
+            {/* Responsive layout: stacked on mobile, side-by-side on desktop */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
               {/* Icon */}
-              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0">
                 {/* Animated havdalah candle flame */}
                 <div className="relative">
                   <svg className="w-12 h-12 sm:w-14 sm:h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -172,17 +180,17 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
               </div>
               
               {/* Content column */}
-              <div className="flex flex-col flex-1">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <div className="flex flex-col flex-1 text-center sm:text-left">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white dark:text-white mb-2">
                   Havdalah
                 </h3>
-                <p className="text-4xl sm:text-5xl font-black text-purple-600 dark:text-purple-400 mb-3">
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-black text-purple-400 dark:text-purple-400 mb-3">
                   {zmanimData.havdalah}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">
-                  End of Shabbat
+                <p className="text-sm text-gray-300 dark:text-gray-400 leading-relaxed group-hover:text-purple-300 dark:group-hover:text-purple-300 transition-colors">
+                  {isHolidayMode ? 'End of holiday' : 'End of Shabbat'}
                 </p>
-                <div className="mt-2 text-xs text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-2 text-xs text-purple-400 dark:text-purple-400">
                   Click to view prayer
                 </div>
               </div>
@@ -194,7 +202,7 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
 
       {/* Holidays Section */}
       {zmanimData.holidays && zmanimData.holidays.length > 0 && (
-        <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 p-6 sm:p-8 transform transition-all duration-300 hover:shadow-3xl hover:scale-[1.02] mb-6">
+        <div className="bg-gray-800/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-600/50 dark:border-gray-500/50 p-6 sm:p-8 transform transition-all duration-300 hover:shadow-3xl hover:scale-[1.02] mb-6">
           {/* Header */}
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -203,10 +211,10 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
               </svg>
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white dark:text-white">
                 Upcoming Holidays
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-300 dark:text-gray-400">
                 Jewish holidays and special days
               </p>
             </div>
@@ -252,7 +260,7 @@ export default function ZmanimCard({ location, zmanimData }: ZmanimCardProps) {
                           Candle lighting: {holiday.candleLighting}
                         </p>
                       )}
-                      <div className="mt-1 text-xs text-yellow-600 dark:text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="mt-1 text-xs text-yellow-600 dark:text-yellow-400">
                         Click to view prayer
                       </div>
                     </div>

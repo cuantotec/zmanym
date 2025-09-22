@@ -5,6 +5,8 @@ import LocationSearch from '@/components/LocationSearch';
 import ZmanimCard from '@/components/ZmanimCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
+// import { ThemeToggle } from '@/components/ThemeToggle';
+// import { ThemeDebug } from '@/components/ThemeDebug';
 import { hebcalService } from '@/services/hebcal';
 import { locationService } from '@/services/location';
 import { createAppError } from '@/utils/errorHandler';
@@ -255,6 +257,7 @@ export default function Home() {
                 </svg>
                 <span>Real-time updates</span>
               </div>
+              {/* <ThemeToggle /> */}
             </div>
           </div>
         </div>
@@ -427,6 +430,26 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      
+      {/* Debug component - remove in production */}
+      {/* <ThemeDebug /> */}
+      
+      {/* Simple test element */}
+      {/* <div className="fixed top-4 right-4 p-4 bg-white dark:bg-gray-900 text-black dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg">
+        <div className="text-sm font-bold">Theme Test</div>
+        <div className="text-xs">This should change color</div>
+        <button 
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              document.documentElement.classList.toggle('dark');
+              console.log('Manual toggle - HTML classes:', document.documentElement.className);
+            }
+          }}
+          className="mt-2 px-2 py-1 bg-red-500 text-white rounded text-xs"
+        >
+          Manual Toggle
+        </button>
+      </div> */}
     </div>
   );
 }
