@@ -41,23 +41,17 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     console.log('🔍 API: Hebcal response data:', data);
 
-    // Transform the data to our format and filter for US locations only
+    // Transform the data to our format
     let locations: LocationData[] = [];
     if (Array.isArray(data)) {
-      // Filter for US locations only
-      const usLocations = data.filter((item: unknown) => {
-        const location = item as Record<string, unknown>;
-        return location.cc === 'US' || location.country === 'United States';
-      });
-      
-      locations = usLocations.map((item: unknown): LocationData => {
+      locations = data.map((item: unknown): LocationData => {
         const location = item as Record<string, unknown>;
         const isZipCode = location.geo === 'zip';
         
         return {
           geonameid: (location.id || location.geonameid || location.place_id) as string,
           name: (location.value || location.name || location.title || location.display_name) as string,
-          country: (location.country || 'United States') as string,
+          country: (location.country || location.cc || 'Unknown') as string,
           admin1: (location.admin1 || location.state || location.region) as string,
           admin2: (location.asciiname || location.city || location.town || location.village) as string,
           isZipCode: isZipCode,
@@ -67,20 +61,14 @@ export async function GET(request: NextRequest) {
         };
       });
     } else if (data.items && Array.isArray(data.items)) {
-      // Filter for US locations only
-      const usLocations = data.items.filter((item: unknown) => {
-        const location = item as Record<string, unknown>;
-        return location.cc === 'US' || location.country === 'United States';
-      });
-      
-      locations = usLocations.map((item: unknown): LocationData => {
+      locations = data.items.map((item: unknown): LocationData => {
         const location = item as Record<string, unknown>;
         const isZipCode = location.geo === 'zip';
         
         return {
           geonameid: (location.id || location.geonameid || location.place_id) as string,
           name: (location.value || location.name || location.title || location.display_name) as string,
-          country: (location.country || 'United States') as string,
+          country: (location.country || location.cc || 'Unknown') as string,
           admin1: (location.admin1 || location.state || location.region) as string,
           admin2: (location.asciiname || location.city || location.town || location.village) as string,
           isZipCode: isZipCode,

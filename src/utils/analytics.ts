@@ -13,6 +13,7 @@ export type AnalyticsEvent =
   | 'holiday_click'
   | 'candle_lighting_click'
   | 'havdalah_click'
+  | 'parasha_link_click'
   | 'error_occurred'
   | 'cache_hit'
   | 'cache_miss'
@@ -151,5 +152,12 @@ export const trackCitySearch = (cityName: string, resultCount: number) => {
   trackEvent('city_search', {
     city_name: cityName.toLowerCase(),
     result_count: resultCount
+  });
+};
+
+export const trackParashaLinkClick = (parashaName: string, location: string) => {
+  trackEvent('parasha_link_click', {
+    parasha_name: parashaName,
+    location: location
   });
 };

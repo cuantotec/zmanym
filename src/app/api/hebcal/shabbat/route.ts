@@ -75,8 +75,19 @@ export async function GET(request: NextRequest) {
     );
 
     const extractTime = (title: string): string => {
-      const timeMatch = title.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
-      return timeMatch ? timeMatch[1] : 'Not available';
+      // Try 12-hour format first (AM/PM)
+      let timeMatch = title.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+      if (timeMatch) {
+        return timeMatch[1];
+      }
+      
+      // Try 24-hour format
+      timeMatch = title.match(/(\d{1,2}:\d{2})/);
+      if (timeMatch) {
+        return timeMatch[1];
+      }
+      
+      return 'Not available';
     };
 
     const candleLighting = candleLightingItem 

@@ -5,6 +5,7 @@ import LocationSearch from '@/components/LocationSearch';
 import ZmanimCard from '@/components/ZmanimCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
+import LanguageSlider from '@/components/LanguageSlider';
 // import { ThemeToggle } from '@/components/ThemeToggle';
 // import { ThemeDebug } from '@/components/ThemeDebug';
 import { hebcalService } from '@/services/hebcal';
@@ -25,7 +26,7 @@ export default function Home() {
   const [appError, setAppError] = useState<AppError | null>(null);
   const [zmanimData, setZmanimData] = useState<ZmanimData | null>(null);
   const [geonameid, setGeonameid] = useState<string>('');
-  const [isDefaultLocation, setIsDefaultLocation] = useState<boolean>(false);
+  const [, setIsDefaultLocation] = useState<boolean>(false);
   const [cachedZmanimData, setCachedZmanimData] = useState<Map<string, ZmanimData>>(new Map());
 
   // Initialize app on mount
@@ -159,6 +160,18 @@ export default function Home() {
         
         await fetchZmanimData(selectedLocation.geonameid, selectedLocation.name, selectedLocation.isZipCode, selectedLocation.zipCode);
       }
+
+      // Auto-scroll to the Shabbat times after a short delay
+      setTimeout(() => {
+        const scrollTarget = document.getElementById('shabbat-card-start');
+        if (scrollTarget) {
+          scrollTarget.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
     } catch (err) {
       console.error('🏠 Main App: Error in handleLocationChange:', err);
       const error = createAppError(err, 'changing location');
@@ -214,6 +227,18 @@ export default function Home() {
         
         await fetchZmanimData(locationData.geonameid, locationData.name, locationData.isZipCode, locationData.zipCode);
       }
+
+      // Auto-scroll to the Shabbat times after a short delay
+      setTimeout(() => {
+        const scrollTarget = document.getElementById('shabbat-card-start');
+        if (scrollTarget) {
+          scrollTarget.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
     } catch (err) {
       console.error('🏠 Main App: Error in handleLocationSelect:', err);
       const error = createAppError(err, 'selecting location');
@@ -233,20 +258,23 @@ export default function Home() {
       <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between py-4 sm:py-6">
-            <div className="flex items-center space-x-3 mb-4 sm:mb-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
+            <div className="flex items-center justify-between w-full mb-4 sm:mb-0">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                    Zmanym
+                  </h1>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                    Shabbat Times Made Simple
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                  Zmanym
-                </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                  Shabbat Times Made Simple
-                </p>
-              </div>
+              <LanguageSlider />
             </div>
             
             {/* Header Actions */}
@@ -343,7 +371,7 @@ export default function Home() {
                 <span className="text-lg font-bold text-gray-900 dark:text-white">Zmanym</span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Accurate Shabbat times for Jewish communities across the United States.
+                Accurate Shabbat times for Jewish communities worldwide.
               </p>
             </div>
 
@@ -361,7 +389,7 @@ export default function Home() {
                   <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span>US locations only</span>
+                  <span>Global locations</span>
           </li>
                 <li className="flex items-center space-x-2">
                   <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">

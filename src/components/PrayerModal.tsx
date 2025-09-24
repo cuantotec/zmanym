@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { X } from 'lucide-react';
 import { 
   PrayerModalProps, 
@@ -8,22 +8,17 @@ import {
   Language, 
   TextSize
 } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { trackPrayerModalClose, trackPrayerLanguageChange, trackPrayerTextSizeChange } from '@/utils/analytics';
 
 export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }: PrayerModalProps) {
+  const { isRTL } = useLanguage();
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('english');
   const [prayerData, setPrayerData] = useState<PrayerContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>('small');
 
-  // Load prayer data when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      loadPrayerData();
-    }
-  }, [isOpen, prayerType, holidayName]);
-
-  const loadPrayerData = async () => {
+  const loadPrayerData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch('/prayers.json');
@@ -45,7 +40,19 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
     } finally {
       setLoading(false);
     }
-  };
+  }, [prayerType, holidayName]);
+
+  // Always use English for now
+  useEffect(() => {
+    setSelectedLanguage('english');
+  }, []);
+
+  // Load prayer data when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      loadPrayerData();
+    }
+  }, [isOpen, prayerType, holidayName, loadPrayerData]);
 
   const getHolidayKey = (holidayName: string): string => {
     const name = holidayName.toLowerCase();
@@ -89,7 +96,6 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
     trackPrayerTextSizeChange(prayerType, oldSize, newSize);
   };
 
-  const isRTL = selectedLanguage === 'hebrew' || selectedLanguage === 'englishHebrew';
 
   const getTextSizeClass = () => {
     switch (textSize) {
@@ -112,7 +118,7 @@ export default function PrayerModal({ isOpen, onClose, prayerType, holidayName }
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black/60 backdrop-blur-md transition-opacity"

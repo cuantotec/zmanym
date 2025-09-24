@@ -1,10 +1,10 @@
 # Zmanym Project Agent Documentation
 
 ## Project Overview
-**Zmanym** is a modern web application for displaying accurate Shabbat candle lighting and Havdalah times for US cities. Built with Next.js 15, React 19, and Tailwind CSS v4.
+**Zmanym** is a modern web application for displaying accurate Shabbat candle lighting and Havdalah times for cities worldwide. Built with Next.js 15, React 19, and Tailwind CSS v4.
 
 ## Key Features
-- **Location Search**: Autocomplete search for US cities with real-time suggestions
+- **Location Search**: Autocomplete search for cities worldwide with real-time suggestions
 - **Shabbat Times**: Accurate candle lighting and Havdalah times from Hebcal API
 - **Local Storage**: 24-hour caching of Shabbat times for better performance
 - **Responsive Design**: Modern UI with glassmorphism effects and animations
@@ -44,7 +44,7 @@ src/
 ```
 
 ## API Endpoints
-- `GET /api/hebcal/search?q={query}` - Search for US cities
+- `GET /api/hebcal/search?q={query}` - Search for cities worldwide
 - `GET /api/hebcal/coords?lat={lat}&lng={lng}` - Get geonameid from coordinates
 - `GET /api/hebcal/shabbat?geonameid={id}` - Get Shabbat times and holidays
 
@@ -52,7 +52,7 @@ src/
 
 ### LocationSearch
 - Real-time autocomplete with debouncing
-- US-only location filtering
+- Global location support
 - Optimized to prevent duplicate API calls
 - Smart dropdown visibility management
 - Modern glassmorphism styling
