@@ -84,6 +84,62 @@ export interface ZmanimData {
 }
 
 // ============================================================================
+// Daily Zmanim Types
+// ============================================================================
+
+export interface DailyZmanimTimes {
+  chatzotNight: string;        // Midnight - Chatzot
+  alotHaShachar: string;       // Dawn - Alot haShachar
+  misheyakir: string;          // Earliest talis & tefillin - Misheyakir
+  misheyakirMachmir: string;   // Earliest talis & tefillin - Misheyakir Machmir
+  dawn: string;                // Civil dawn
+  sunrise: string;             // Sunrise
+  sofZmanShma: string;         // Latest Shema (Gra)
+  sofZmanShmaMGA: string;      // Latest Shema (MGA)
+  sofZmanTfilla: string;       // Latest Shacharit (Gra)
+  sofZmanTfillaMGA: string;    // Latest Shacharit (MGA)
+  chatzot: string;             // Midday - Chatzot
+  minchaGedola: string;        // Earliest Mincha - Mincha Gedola
+  minchaKetana: string;        // Preferable earliest time to recite Minchah
+  plagHaMincha: string;        // Plag haMincha
+  sunset: string;              // Sunset
+  dusk: string;                // Civil dusk
+  beinHaShmashos: string;      // Bein Hashemashot / Twilight
+  tzeit7083deg: string;        // Nightfall (3 medium stars) - Tzeit 7.083°
+  tzeit85deg: string;          // Nightfall (3 small stars) - Tzeit 8.5°
+  tzeit42min: string;          // Nightfall (3 medium stars) - Tzeit 42 minutes
+  tzeit50min: string;          // Nightfall (3 small stars) - Tzeit 50 minutes
+  tzeit72min: string;          // Nightfall (Rabbeinu Tam) - Tzeit 72 minutes
+}
+
+export interface DailyZmanimLocation {
+  latitude: number;
+  longitude: number;
+  il: boolean;
+  tzid: string;
+  name: string;
+  cc: string;
+  geoid: number;
+  geo: string;
+  geonameid: number;
+  asciiname: string;
+  admin1: string;
+  population: number;
+}
+
+export interface DailyZmanimData {
+  date: string;
+  location: DailyZmanimLocation;
+  times: DailyZmanimTimes;
+}
+
+export interface HebcalZmanimResponse {
+  date: string;
+  location: DailyZmanimLocation;
+  times: DailyZmanimTimes;
+}
+
+// ============================================================================
 // Prayer Types
 // ============================================================================
 

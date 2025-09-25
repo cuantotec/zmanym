@@ -3,7 +3,8 @@
 import { CacheService } from './cache';
 import { 
   LocationData, 
-  ZmanimData
+  ZmanimData,
+  DailyZmanimData
 } from '@/types';
 
 class HebcalService {
@@ -134,6 +135,55 @@ class HebcalService {
     } catch (error) {
       console.error('❌ HebcalService: Error fetching Shabbat times:', error);
       throw new Error('Failed to fetch Shabbat times');
+    }
+  }
+
+  // Fetch daily zmanim for a location using our API route
+  async getDailyZmanim(geonameid: string, date?: string, isZipCode?: boolean, zipCode?: string): Promise<DailyZmanimData> {
+    console.log('🕐 HebcalService: getDailyZmanim called with geonameid:', geonameid, 'date:', date, 'isZipCode:', isZipCode, 'zipCode:', zipCode);
+    
+    const cacheKey = `daily_zmanim_${geonameid}_${date || 'today'}`;
+    
+    // Check cache first
+    const cached = this.getCachedData(cacheKey);
+    if (cached) {
+      console.log('🕐 HebcalService: Using cached daily zmanim data');
+      return cached as DailyZmanimData;
+    }
+
+    try {
+      let url: string;
+      if (isZipCode && zipCode) {
+        url = `${this.baseUrl}/zmanim?zip=${zipCode}`;
+      } else {
+        url = `${this.baseUrl}/zmanim?geonameid=${geonameid}`;
+      }
+      
+      if (date) {
+        url += `&date=${date}`;
+      }
+      
+      console.log('🕐 HebcalService: Fetching URL:', url);
+      
+      const response = await fetch(url);
+      console.log('🕐 HebcalService: Response status:', response.status, response.statusText);
+      
+      if (!response.ok) {
+        console.error('🕐 HebcalService: Response not OK:', response.status, response.statusText);
+        throw new Error(`Daily zmanim fetch failed: ${response.status}`);
+      }
+
+      const dailyZmanimData: DailyZmanimData = await response.json();
+      console.log('🕐 HebcalService: Got daily zmanim data:', dailyZmanimData);
+      
+      // Cache the data
+      this.setCachedData(cacheKey, dailyZmanimData);
+      console.log('🕐 HebcalService: Cached daily zmanim data for', geonameid, date || 'today');
+      
+      return dailyZmanimData;
+    } catch (error) {
+      console.error('❌ HebcalService: Error fetching daily zmanim:', error);
+      throw new Error('Failed to fetch daily zmanim');
     }
   }
 

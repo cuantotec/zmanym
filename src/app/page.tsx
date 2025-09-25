@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import LocationSearch from '@/components/LocationSearch';
 import ZmanimCard from '@/components/ZmanimCard';
+import DailyZmanimCard from '@/components/DailyZmanimCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
 import LanguageSlider from '@/components/LanguageSlider';
@@ -13,6 +14,7 @@ import { locationService } from '@/services/location';
 import { createAppError } from '@/utils/errorHandler';
 import { 
   ZmanimData, 
+  DailyZmanimData,
   LocationData, 
   LocationInfo, 
   AppError 
@@ -25,9 +27,12 @@ export default function Home() {
   const [error, setError] = useState<string>('');
   const [appError, setAppError] = useState<AppError | null>(null);
   const [zmanimData, setZmanimData] = useState<ZmanimData | null>(null);
+  const [dailyZmanimData, setDailyZmanimData] = useState<DailyZmanimData | null>(null);
+  const [dailyZmanimLoading, setDailyZmanimLoading] = useState<boolean>(false);
   const [geonameid, setGeonameid] = useState<string>('');
   const [, setIsDefaultLocation] = useState<boolean>(false);
   const [cachedZmanimData, setCachedZmanimData] = useState<Map<string, ZmanimData>>(new Map());
+  const [showDailyZmanim, setShowDailyZmanim] = useState<boolean>(false);
 
   // Initialize app on mount
   useEffect(() => {
@@ -108,6 +113,24 @@ export default function Home() {
     }
   };
 
+  const fetchDailyZmanimData = async (geonameid: string, isZipCode?: boolean, zipCode?: string) => {
+    console.log('🏠 Main App: Fetching daily zmanim data for geonameid:', geonameid, 'isZipCode:', isZipCode, 'zipCode:', zipCode);
+    
+    try {
+      setDailyZmanimLoading(true);
+      const data = await hebcalService.getDailyZmanim(geonameid, undefined, isZipCode, zipCode);
+      console.log('🏠 Main App: Got daily zmanim data:', data);
+      
+      setDailyZmanimData(data);
+    } catch (err) {
+      console.error('🕐 Main App: Error fetching daily zmanim data:', err);
+      // Don't throw error for daily zmanim - it's optional
+      setDailyZmanimData(null);
+    } finally {
+      setDailyZmanimLoading(false);
+    }
+  };
+
   const handleLocationChange = async (newLocation: string) => {
     console.log('🏠 Main App: handleLocationChange called with:', newLocation);
     
@@ -160,6 +183,9 @@ export default function Home() {
         
         await fetchZmanimData(selectedLocation.geonameid, selectedLocation.name, selectedLocation.isZipCode, selectedLocation.zipCode);
       }
+
+      // Also fetch daily zmanim data
+      await fetchDailyZmanimData(selectedLocation.geonameid, selectedLocation.isZipCode, selectedLocation.zipCode);
 
       // Auto-scroll to the Shabbat times after a short delay
       setTimeout(() => {
@@ -227,6 +253,9 @@ export default function Home() {
         
         await fetchZmanimData(locationData.geonameid, locationData.name, locationData.isZipCode, locationData.zipCode);
       }
+
+      // Also fetch daily zmanim data
+      await fetchDailyZmanimData(locationData.geonameid, locationData.isZipCode, locationData.zipCode);
 
       // Auto-scroll to the Shabbat times after a short delay
       setTimeout(() => {
@@ -327,10 +356,62 @@ export default function Home() {
               onRetry={() => initializeApp()}
             />
           ) : zmanimData ? (
-            <ZmanimCard 
-              location={location}
-              zmanimData={zmanimData}
-            />
+            <div className="space-y-8">
+              {/* Toggle Button */}
+              <div className="flex justify-center">
+                <button
+                  onClick={() => {
+                    setShowDailyZmanim(!showDailyZmanim);
+                    // If switching to daily zmanim and we don't have data, fetch it
+                    if (!showDailyZmanim && !dailyZmanimData && geonameid) {
+                      fetchDailyZmanimData(geonameid);
+                    }
+                  }}
+                  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full font-bold text-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 shadow-2xl hover:shadow-3xl transform hover:scale-110 border-2 border-blue-500"
+                >
+                  {showDailyZmanim ? 'Show Shabbat Times' : 'Show Daily Zmanim'}
+                </button>
+              </div>
+
+              {/* Shabbat Times Card */}
+              {!showDailyZmanim && (
+                <ZmanimCard 
+                  location={location}
+                  zmanimData={zmanimData}
+                />
+              )}
+
+              {/* Daily Zmanim Card */}
+              {showDailyZmanim && dailyZmanimData && (
+                <DailyZmanimCard 
+                  dailyZmanimData={dailyZmanimData}
+                  location={location}
+                />
+              )}
+
+
+              {/* Loading state for daily zmanim */}
+              {showDailyZmanim && dailyZmanimLoading && (
+                <div className="flex justify-center items-center py-16">
+                  <LoadingSpinner message="Loading daily zmanim..." />
+                </div>
+              )}
+
+              {/* Error state for daily zmanim */}
+              {showDailyZmanim && !dailyZmanimLoading && !dailyZmanimData && (
+                <div className="flex justify-center items-center py-16">
+                  <div className="text-center">
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">Failed to load daily zmanim</p>
+                    <button 
+                      onClick={() => fetchDailyZmanimData(geonameid)}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 sm:py-24 text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center mb-6">
